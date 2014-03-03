@@ -42,12 +42,13 @@ end
 default['postfix']['main']['biff'] = 'no'
 default['postfix']['main']['append_dot_mydomain'] = 'no'
 default['postfix']['main']['myhostname'] = (node['fqdn'] || node['hostname']).to_s.chomp('.')
-default['postfix']['main']['mydomain'] = (node['domain'] || node['hostname']).to_s.chomp('.')
+#default['postfix']['main']['mydomain'] = (node['domain'] || node['hostname']).to_s.chomp('.')
 default['postfix']['main']['myorigin'] = '$myhostname'
 default['postfix']['main']['mydestination'] = [node['postfix']['main']['myhostname'], node['hostname'], 'localhost.localdomain', 'localhost'].compact
 default['postfix']['main']['smtpd_use_tls'] = 'yes'
 default['postfix']['main']['smtp_use_tls'] = 'yes'
 default['postfix']['main']['alias_maps'] = ["hash:#{node['postfix']['aliases_db']}"]
+default['postfix']['main']['alias_database'] = ["hash:#{node['postfix']['aliases_db']}"]
 default['postfix']['main']['mailbox_size_limit'] = 0
 default['postfix']['main']['recipient_delimiter'] = '+'
 default['postfix']['main']['smtp_sasl_auth_enable'] = 'no'
@@ -73,7 +74,7 @@ end
 if node['postfix']['main']['smtpd_use_tls'] == 'yes'
   default['postfix']['main']['smtpd_tls_cert_file'] = '/etc/ssl/certs/ssl-cert-snakeoil.pem'
   default['postfix']['main']['smtpd_tls_key_file'] = '/etc/ssl/private/ssl-cert-snakeoil.key'
-  default['postfix']['main']['smtpd_tls_CAfile'] = cafile
+#  default['postfix']['main']['smtpd_tls_CAfile'] = cafile
   default['postfix']['main']['smtpd_tls_session_cache_database'] = 'btree:${data_directory}/smtpd_scache'
 end
 
@@ -92,11 +93,11 @@ if node['postfix']['main']['smtp_sasl_auth_enable'] == 'yes'
 end
 
 # # Default main.cf attributes according to `postconf -d`
-# default['postfix']['main']['relayhost'] = ''
-# default['postfix']['main']['milter_default_action']  = 'tempfail'
-# default['postfix']['main']['milter_protocol']  = '6'
-# default['postfix']['main']['smtpd_milters']  = ''
-# default['postfix']['main']['non_smtpd_milters']  = ''
+default['postfix']['main']['relayhost'] = ''
+default['postfix']['main']['milter_default_action']  = 'tempfail'
+default['postfix']['main']['milter_protocol']  = '6'
+default['postfix']['main']['smtpd_milters']  = ''
+default['postfix']['main']['non_smtpd_milters']  = ''
 # default['postfix']['main']['sender_canonical_classes'] = nil
 # default['postfix']['main']['recipient_canonical_classes'] = nil
 # default['postfix']['main']['canonical_classes'] = nil

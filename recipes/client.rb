@@ -37,6 +37,8 @@ else
   relayhost = results.map { |n| n['ipaddress'] }.first
 end
 
-node.set['postfix']['main']['relayhost'] = "[#{relayhost}]"
+if relayhost != ''
+  node.default['postfix']['main']['relayhost'] = "[#{relayhost}]"
+end
 
 include_recipe 'postfix'
